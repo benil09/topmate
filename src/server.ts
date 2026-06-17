@@ -1,7 +1,7 @@
 import {app} from "./app.js"
 import dotenv from 'dotenv'
 import { PORT } from './config/env.js';
-import { connect } from "node:http2";
+// import { connect } from "node:http2";
 import { connectDB } from "./config/database.js";
 
 dotenv.config()
@@ -15,4 +15,7 @@ async function startServer() {
     });
 }
 
-startServer();
+startServer().catch((error)=>{
+        console.log("Error connecting the server : ",error);
+        process.exit(1);
+})
