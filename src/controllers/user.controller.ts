@@ -1,16 +1,17 @@
 
 import {getAllUsersService, getUserByIdService,createUserService,updateUserService, deleteUserService} from "../services/users.service.js"
 import { Request,Response } from "express"
+import { sendSuccess } from "../utils/api-response.js";
 
 export  async function getAllUsers(_req:Request,res:Response){
     const response = await getAllUsersService();
-    return res.json(response);
+    sendSuccess(res,response);
 }
 
 export async function getUserById(req:Request,res:Response){
     const {id} = req.params;
     const response = await getUserByIdService(Number(id))
-    return res.json(response)
+    sendSuccess(res,response)
 }
 
 export async function createUser(req:Request,res:Response) {

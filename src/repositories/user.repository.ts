@@ -5,7 +5,7 @@ export async function getAllUsers(){
         const response = await prisma.user.findMany();
         return response;
     } catch (error) {
-        
+        console.log(error);
     }
 }
 export async function getUserById(id:number){

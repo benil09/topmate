@@ -33,8 +33,6 @@ export const createUserService = async (Email : string , name : string )=>{
 
 
 export const updateUserService = async (data : string , userId:number)=>{
-    
-
     const response = await updateUserRep(data , userId);
     return response;
 }
