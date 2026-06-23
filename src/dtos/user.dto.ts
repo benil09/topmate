@@ -2,8 +2,8 @@ import {z } from 'zod'
 
 
 export const createUserSchema = z.object({
-    email:z.email("invalid email address"),
-    name:z.string().max(100,'name must be less than 100 char').min(1,'name is required')
+    Email: z.email("invalid email address"),
+    name:  z.string().min(1,"Name is required").max(100,'name should not exceed 100 char')
 })
 
 

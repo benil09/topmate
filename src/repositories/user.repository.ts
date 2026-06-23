@@ -1,4 +1,5 @@
 import {prisma} from "../config/database.js"
+import { createUserDto } from "../dtos/user.dto.js";
 
 export async function getAllUsers(){
     try {
@@ -21,43 +22,18 @@ export async function getUserById(id:number){
     }
 }
 
+// find user by email
+export async function findByEmail(email:string){
+    const user = await prisma.user.findUnique({
+        where:{
+            Email:email
+        }
+    })
+    return user;
+}
+
 // creating a user 
-export const createUserRep = async (Email:string , name : string) =>{
-    try {
-        const user = await prisma.user.create({
-            data : {
-                Email,
-                name
-            }
-        })
-        return user;
-    } catch (error) {
-        console.log("Error in repo layer : " , error);
-        throw error;
-    }
-}
-
-export const updateUserRep = async (UserData:string, userId:number)=>{
-    try {
-        const updatedUser = await prisma.user.update({
-            where:{id:userId},
-            data:UserData
-        })
-        return updatedUser;
-    } catch (error) {
-        console.log("Error in repo layer" , error);
-        throw error;
-    }
-}
-
-export const deleteUserRep = async (userId:number)=>{
-    try {
-        const deletedUser = await prisma.user.delete({
-            where:{id:userId}
-        })
-        return deletedUser
-    } catch (error) {
-        console.log("Error in delete user rep layer , " , error)
-        throw error;
-    }
+export async function createUserRep(data:createUserDto){
+    const user = await  prisma.user.create({data});
+    return user
 }

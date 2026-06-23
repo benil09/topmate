@@ -1,7 +1,8 @@
 
 
-import {getAllUsers, getUserById,createUserRep,updateUserRep, deleteUserRep} from "../repositories/user.repository.js"
-import { notFound } from "../utils/api-error.js";
+import { createUserDto } from "../dtos/user.dto.js";
+import {getAllUsers, getUserById,createUserRep, findByEmail} from "../repositories/user.repository.js"
+import { conflict, notFound } from "../utils/api-error.js";
 
 
 export async function getAllUsersService(){
@@ -17,12 +18,14 @@ export async function getUserByIdService(id:number){
     return resp;
 }
 
-export const createUserService = async (Email : string , name : string )=>{
+export  const createUserService = async (data:createUserDto)=>{
 
-    if(!Email || !name){
-        throw new Error ("Email or name field is missing")
+    //check if the user already exists or not 
+    const existingUser = await findByEmail(data.Email);
+    if(existingUser){
+        throw conflict("User already exist")
     }
-    const response = await createUserRep(Email,name);
+    const response = await createUserRep(data);
 
     if(!response){
         throw new Error ("Unable to create user")
@@ -32,12 +35,3 @@ export const createUserService = async (Email : string , name : string )=>{
 }
 
 
-export const updateUserService = async (data : string , userId:number)=>{
-    const response = await updateUserRep(data , userId);
-    return response;
-}
-
-export const deleteUserService = async (userId : number)=>{
-    const response = await deleteUserRep(userId);
-    return response;
-}
