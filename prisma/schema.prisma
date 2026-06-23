@@ -14,9 +14,27 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  EventTypes EventTypes[] 
+  
   @@map("users")
 }
 
-model Slot {
-  id Int @id @unique @default(autoincrement())
+// A user has many eventTypes but an eventType belongs to an user -> One to many relation 
+model EventTypes {
+  id              Int      @id @unique @default(autoincrement())
+  hostId          Int
+  title           String
+  description     String?
+  locationType    String   @default("online")
+  locationValue   String?
+  durationMin     Int
+  isActive        Boolean  @default(true)
+  bufferBeforeMin Int      @default(0)
+  bufferAfterMin  Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  host User @relation(fields: [hostId] , references:[id],onDelete:Cascade)
+
+  @@map("event_types")
 }
