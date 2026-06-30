@@ -49,19 +49,29 @@ export async function deleteEventTypeRepo(eventId: number) {
 }
 
 export async function findByHostAndSlug(hostId: number, slug: string) {
-    const response = await prisma.eventTypes.findFirst({
-        where : {
-            hostId,
-            slug
-        }
-    })
-    return response;
-}
-
-export async function findActiveByHostIdAndEventSlug(hostId: number, slug: string) { }
-
-export async function slugExistsForHost(hostId: number, slug: string) { 
     
 }
 
-export async function findActiveEventTypesByHost(hostId: number) { }
+export async function findActiveByHostIdAndEventSlug(hostId: number, slug: string) {
+    return await prisma.eventTypes.findFirst({
+        where: {
+            hostId,
+            slug,
+            isActive: true
+        }
+    });
+}
+
+export async function slugExistsForHost(hostId: number, slug: string) { 
+    const count = await prisma.eventTypes.count({
+        where: {
+            hostId,
+            slug
+        }
+    });
+    return count > 0;
+}
+
+export async function findActiveEventTypesByHost(hostId: number) {
+   
+}
