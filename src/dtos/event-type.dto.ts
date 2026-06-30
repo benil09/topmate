@@ -10,7 +10,7 @@ export const createEventTypeSchema = z.object({
     isActive:z.boolean().default(true),
     bufferBeforeMin:z.number().optional(),
     bufferAfterMin:z.number().optional(),
-    slug:z.string().min(1).regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens")
+    slug:z.string().regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens").optional()
 })
 
 export type CreateEventTypeDto = z.infer<typeof createEventTypeSchema>
