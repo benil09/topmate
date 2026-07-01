@@ -31,6 +31,7 @@ export async function getEventTypeById(req:Request,res:Response){
 // Create a new event type for the authenticated user
 export async function createEventType(req: Request, res: Response) {
     const userId = getAuthenticatedUserId(req);
+    console.log(userId);
     const response = await createEventTypeService(userId, req.body);
     sendSuccess(res, response, 201, "Event type created successfully");
 }
@@ -51,10 +52,10 @@ export async function deleteEventType(req: Request, res: Response) {
     sendSuccess(res, response, 200, "Event type deleted successfully");
 }
 
-// Get public event details by hostId and event slug
-export async function getEventTypePublicDetails(req: Request, res: Response) {
-    const hostId = Number(req.params.hostId);
+// Get public event details by userId and event slug
+export async function getPublicEventType(req: Request, res: Response) {
+    const userId = Number(req.params.userId);
     const slug = req.params.slug as string;
-    const response = await getEventTypePublic(slug, hostId);
+    const response = await getEventTypePublic(slug, userId);
     sendSuccess(res, response);
 }
