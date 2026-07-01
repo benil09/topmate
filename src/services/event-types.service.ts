@@ -11,6 +11,14 @@ export async function getEventTypesByUserIdService (hostId: number){
     return response;
 }
 
+export async function getEventTypeByEventIdService(eventId:number){
+    const eventType = await findEventTypeByEventIdRepo(eventId);
+    if(!eventType){
+        throw notFound("Event not found");
+    }
+    return eventType;
+}
+
 export async function createEventTypeService(hostId:number,data:CreateEventTypeDto){
     const slugPassed = data.slug ?? slug(data.title,{lower:true})
 
@@ -44,7 +52,7 @@ export async function updateEventTypeService(eventId:number , data:UpdateEventTy
         }
     }
 
-    return updateEventTypeRepo(hostId,data);
+    return updateEventTypeRepo(eventId,data);
 
 }
 
