@@ -7,6 +7,7 @@ import {
     getEventTypeById
 } from "../controllers/event-type.controller.js";
 import { validate } from "../middlewares/validate.js";
+import { authenticate } from "../middlewares/auth.js";
 import { createEventTypeSchema, updateEventTypeSchema } from "../dtos/event-type.dto.js";
 
 const eventTypesRouter:Router = express.Router();
@@ -18,12 +19,12 @@ eventTypesRouter.get("/user/:hostId", getEventsByUser); // ✅
 eventTypesRouter.get("/:eventId", getEventTypeById); // ✅
 
 // Create a new event type
-eventTypesRouter.post("/", validate(createEventTypeSchema), createEventType); //✅x
+eventTypesRouter.post("/", authenticate, validate(createEventTypeSchema), createEventType); //✅
 
 // Update an existing event type
-eventTypesRouter.put("/:eventId", validate(updateEventTypeSchema), updateEventType);
+eventTypesRouter.put("/:eventId", authenticate, validate(updateEventTypeSchema), updateEventType); // ✅
 
 // Delete an event type
-eventTypesRouter.delete("/:eventId", deleteEventType);
+eventTypesRouter.delete("/:eventId", authenticate, deleteEventType); // ✅
 
 export default eventTypesRouter;

@@ -8,12 +8,6 @@ import {
 import { Request, Response } from "express";
 import { sendSuccess } from "../utils/api-response.js";
 
-// Helper to safely extract user ID from request (populated by authentication middleware)
-function getAuthenticatedUserId(req: Request): number {
-    const userId = (req as any).userId || (req as any).user?.id || (req as any).user || req.headers['x-user-id'];
-    return Number(userId);
-}
-
 // Find all event types of a host/user
 export async function getEventsByUser(req: Request, res: Response) {
    const hostId = Number(req.params.hostId);
@@ -30,15 +24,14 @@ export async function getEventTypeById(req:Request,res:Response){
 
 // Create a new event type for the authenticated user
 export async function createEventType(req: Request, res: Response) {
-    const userId = getAuthenticatedUserId(req);
-    console.log(userId);
+    const userId = req.userId as number;
     const response = await createEventTypeService(userId, req.body);
     sendSuccess(res, response, 201, "Event type created successfully");
 }
 
 // Update an existing event type of the user
 export async function updateEventType(req: Request, res: Response) {
-    const userId = getAuthenticatedUserId(req);
+    const userId = req.userId as number;
     const eventId = Number(req.params.eventId);
     const response = await updateEventTypeService(eventId, req.body, userId);
     sendSuccess(res, response, 200, "Event type updated successfully");
@@ -46,7 +39,7 @@ export async function updateEventType(req: Request, res: Response) {
 
 // Delete an event type of the user
 export async function deleteEventType(req: Request, res: Response) {
-    const userId = getAuthenticatedUserId(req);
+    const userId = req.userId as number;
     const eventId = Number(req.params.eventId);
     const response = await deleteEventTypeService(userId, eventId);
     sendSuccess(res, response, 200, "Event type deleted successfully");
