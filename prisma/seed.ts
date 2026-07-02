@@ -20,6 +20,7 @@ async function main() {
     data: {
       Email: "jane.smith@example.com",
       name: "Jane Smith",
+      slug
     },
   });
 

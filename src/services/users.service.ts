@@ -1,8 +1,8 @@
 
-
 import { createUserDto, updateUserDto } from "../dtos/user.dto.js";
 import {getAllUsers, getUserById,createUserRep, findByEmail, updateUserRep, deleteUserRep} from "../repositories/user.repository.js"
 import { conflict, notFound } from "../utils/api-error.js";
+import slug from "slug";
 
 // find all user service
 export async function getAllUsersService(){
@@ -28,7 +28,11 @@ export  const createUserService = async (data:createUserDto)=>{
     if(existingUser){
         throw conflict("User already exist")
     }
-    const response = await createUserRep(data);
+
+    const slugPassed = data.slug ? data.slug :  slug(data.name,{lower:true}) // TODO : make slug unique
+    
+
+    const response = await createUserRep({...data,slug:slugPassed});
 
     if(!response){
         throw new Error ("Unable to create user")
